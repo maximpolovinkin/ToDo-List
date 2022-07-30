@@ -63,7 +63,13 @@ class FileCache {
        
     }
 
-    func deleteTask(){
+    func deleteTask(Id: String){
+        for i in 0..<tasks.count{
+            if tasks[i].id == Id{
+                tasks.remove(at: i)
+                return
+            }
+        }
         
     }
     
