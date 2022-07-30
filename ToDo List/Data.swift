@@ -36,9 +36,7 @@ extension TodoItem{
         }
         
      return self.init(id: id, task: task, deadLine: deadLine, isCopmplete: isCopmlete, createDate: createDate)
-        
-        
-                
+
     }
     
     var json: Any{
@@ -46,3 +44,33 @@ extension TodoItem{
         return 0
     }
 }
+
+
+class FileCache {
+    
+    var tasks = [TodoItem]()
+    var a: Int
+    
+    func addTask(id: String, task: String, deadLine: Date?, isCopmplete: Bool, createDate: Date){
+        if let deadLine = deadLine {
+            let newTask = TodoItem(id: id, task: task, deadLine: deadLine, isCopmplete: isCopmplete, createDate: createDate)
+            tasks.append(newTask)
+        } else {
+            let newTask = TodoItem(id: id, task: task, isCopmplete: isCopmplete, createDate: createDate)
+            tasks.append(newTask)
+        }
+
+       
+    }
+
+    func deleteTask(){
+        
+    }
+    
+    init(a: Int){
+        self.a = a
+    }
+}
+
+
+
