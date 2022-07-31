@@ -24,49 +24,19 @@ class ViewController: UIViewController, UITableViewDataSource, UIPopoverPresenta
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Мои дела"
+      
+        view.backgroundColor = UIColor.systemGray6
+        
         view.addSubview(table)
         table.dataSource = self
-       // table.backgroundColor = UIColor.lightGray
+      
        
         
          
     }
     
-    //BETA VERSION
+   
     @objc func addTapped(sender: UIButton!){
-        /*
-        let alert = UIAlertController(title: "Новое дело", message: "Добавить новую задачу", preferredStyle: .alert)
-        alert.addTextField{ field in
-            field.placeholder = "Что надо сделать?"
-        }
-        alert.addAction(UIAlertAction(title: "Готово", style: .default, handler:{ (_) in
-            if let field = alert.textFields?.first{
-                if let text = field.text, !text.isEmpty{
-                    
-                    self.a.addTask(id: "1", task: text, deadLine: nil, isCopmplete: false, createDate: Date.now)
-                    self.table.reloadData()
-                    
-                }
-            }
-        }))
-        alert.addAction(UIAlertAction(title: "Отменить", style: .cancel, handler: nil ))
-        present(alert, animated: true)
-        */
-        
-     /*   let addPage = EmptyViewController() as UIViewController
-        addPage.modalPresentationStyle = .popover
-      
-        let popover = addPage.popoverPresentationController
-        popover?.delegate = self
-        popover?.permittedArrowDirections = .any
-        popover?.sourceView = self.view
-        popover?.sourceRect = CGRect(x: 100, y: 100, width: 100, height: 100)
-        
-        
-
-        present(addPage, animated: true, completion: nil)
-      
-      */
         let rootVC = EmptyViewController()
         let navigationController = UINavigationController(rootViewController: rootVC)
         
@@ -105,7 +75,7 @@ class ViewController: UIViewController, UITableViewDataSource, UIPopoverPresenta
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.backgroundColor = UIColor.lightGray
+        cell.backgroundColor = UIColor.white
         cell.textLabel?.text = a.tasks[indexPath.row].task
         return cell
     }
