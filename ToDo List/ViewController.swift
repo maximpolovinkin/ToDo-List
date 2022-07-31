@@ -8,7 +8,8 @@
 import UIKit
 
 
-class ViewController: UIViewController, UITableViewDataSource {
+
+class ViewController: UIViewController, UITableViewDataSource, UIPopoverPresentationControllerDelegate {
    
    
     let a = FileCache(a: 1)
@@ -31,7 +32,9 @@ class ViewController: UIViewController, UITableViewDataSource {
          
     }
     
+    //BETA VERSION
     @objc func addTapped(sender: UIButton!){
+        /*
         let alert = UIAlertController(title: "Новое дело", message: "Добавить новую задачу", preferredStyle: .alert)
         alert.addTextField{ field in
             field.placeholder = "Что надо сделать?"
@@ -48,6 +51,26 @@ class ViewController: UIViewController, UITableViewDataSource {
         }))
         alert.addAction(UIAlertAction(title: "Отменить", style: .cancel, handler: nil ))
         present(alert, animated: true)
+        */
+        
+     /*   let addPage = EmptyViewController() as UIViewController
+        addPage.modalPresentationStyle = .popover
+      
+        let popover = addPage.popoverPresentationController
+        popover?.delegate = self
+        popover?.permittedArrowDirections = .any
+        popover?.sourceView = self.view
+        popover?.sourceRect = CGRect(x: 100, y: 100, width: 100, height: 100)
+        
+        
+
+        present(addPage, animated: true, completion: nil)
+      
+      */
+        let rootVC = EmptyViewController()
+        let navigationController = UINavigationController(rootViewController: rootVC)
+        
+        present(navigationController, animated: true)
     }
     
     @objc func addTask(){
