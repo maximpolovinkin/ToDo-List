@@ -7,13 +7,26 @@
 
 import UIKit
 
-
+let a = FileCache(a: 1)
+var saveTap = false
 
 class ViewController: UIViewController, UITableViewDataSource, UIPopoverPresentationControllerDelegate {
    
    
-    let a = FileCache(a: 1)
-    
+   
+    func addButton() {
+        let addButton = UIButton(frame: CGRect(x: (view.bounds.width / 2) - 24, y: view.bounds.height - 96 , width: 48, height: 48))
+        addButton.addTarget(self, action: #selector(addTapped), for: UIControl.Event.touchUpInside)
+        
+        addButton.setTitle("+", for: .normal)
+        addButton.backgroundColor = UIColor.systemBlue
+        addButton.titleLabel?.textColor = UIColor.white
+        addButton.titleLabel?.font = UIFont.systemFont(ofSize: 38)
+        addButton.contentVerticalAlignment = .top
+        addButton.contentHorizontalAlignment = .center
+        addButton.layer.cornerRadius = addButton.layer.bounds.height / 2
+        view.addSubview(addButton)
+    }
 
     private let table: UITableView = {
         let table = UITableView()
@@ -29,10 +42,7 @@ class ViewController: UIViewController, UITableViewDataSource, UIPopoverPresenta
         
         view.addSubview(table)
         table.dataSource = self
-      
-       
         
-         
     }
     
    
@@ -41,6 +51,10 @@ class ViewController: UIViewController, UITableViewDataSource, UIPopoverPresenta
         let navigationController = UINavigationController(rootViewController: rootVC)
         
         present(navigationController, animated: true)
+        if saveTap{
+            table.reloadData()
+            print("sdfsdf")
+        }
     }
     
     @objc func addTask(){
@@ -55,25 +69,11 @@ class ViewController: UIViewController, UITableViewDataSource, UIPopoverPresenta
         
     }
     
-    func addButton() {
-        let addButton = UIButton(frame: CGRect(x: (view.bounds.width / 2) - 24, y: view.bounds.height - 96 , width: 48, height: 48))
-        addButton.addTarget(self, action: #selector(addTapped), for: UIControl.Event.touchUpInside)
-        
-        addButton.setTitle("+", for: .normal)
-        addButton.backgroundColor = UIColor.systemBlue
-        addButton.titleLabel?.textColor = UIColor.white
-        addButton.titleLabel?.font = UIFont.systemFont(ofSize: 38)
-        addButton.contentVerticalAlignment = .top
-        addButton.contentHorizontalAlignment = .center
-        addButton.layer.cornerRadius = addButton.layer.bounds.height / 2
-        view.addSubview(addButton)
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return a.tasks.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView1(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.backgroundColor = UIColor.white
         cell.textLabel?.text = a.tasks[indexPath.row].task
