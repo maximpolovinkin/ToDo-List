@@ -7,12 +7,13 @@
 
 import UIKit
 
-let a = FileCache(a: 1)
+
 var saveTap = false
 
 class ViewController: UIViewController, UITableViewDataSource, UIPopoverPresentationControllerDelegate {
    
-   
+    var cellText = ""
+    let a = FileCache(a: 1)
    
     func addButton() {
         let addButton = UIButton(frame: CGRect(x: (view.bounds.width / 2) - 24, y: view.bounds.height - 96 , width: 48, height: 48))
@@ -28,7 +29,7 @@ class ViewController: UIViewController, UITableViewDataSource, UIPopoverPresenta
         view.addSubview(addButton)
     }
 
-    private let table: UITableView = {
+     let table: UITableView = {
         let table = UITableView()
         table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         return table
@@ -42,7 +43,8 @@ class ViewController: UIViewController, UITableViewDataSource, UIPopoverPresenta
         
         view.addSubview(table)
         table.dataSource = self
-        
+        add(text: cellText)
+        table.reloadData()
     }
     
    
@@ -51,21 +53,18 @@ class ViewController: UIViewController, UITableViewDataSource, UIPopoverPresenta
         let navigationController = UINavigationController(rootViewController: rootVC)
         
         present(navigationController, animated: true)
-        if saveTap{
-            table.reloadData()
-            print("sdfsdf")
-        }
     }
-    
-    @objc func addTask(){
-        
+     
+    func add(text: String){
+        self.a.addTask(id: "1", task: text, deadLine: nil, isCopmplete: false, createDate: Date.now)
+        self.table.reloadData()
     }
-    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         table.frame = view.bounds
         addButton()
-        
+        table.reloadData()
+        add(text: cellText)
         
     }
     
@@ -73,12 +72,14 @@ class ViewController: UIViewController, UITableViewDataSource, UIPopoverPresenta
         return a.tasks.count
     }
     
-    func tableView1(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.backgroundColor = UIColor.white
         cell.textLabel?.text = a.tasks[indexPath.row].task
         return cell
     }
+    
+   
     
 
 

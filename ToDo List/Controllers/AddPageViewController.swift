@@ -8,7 +8,7 @@
 import UIKit
 
 class EmptyViewController : UIViewController, UITableViewDataSource, UIPopoverPresentationControllerDelegate, UITableViewDelegate {
-    
+     let t = ViewController()
   
     var taskText = ""
     
@@ -71,21 +71,21 @@ class EmptyViewController : UIViewController, UITableViewDataSource, UIPopoverPr
         self.dismiss(animated: true, completion: nil)
     }
     
+    //MARK: это говно тоже переделай
     @objc func saveTapped(){
-        a.addTask(id: "1", task: taskText, deadLine: nil, isCopmplete: false, createDate: Date.now)
-        saveTap = true
+        let vc = ViewController()
+        vc.cellText = taskText
         self.dismiss(animated: true, completion: nil)
-        print(taskText)
         
     }
-    
+  
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 2
     }
     
     var rowNum = 0
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-       // let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+
         let cell = UITableViewCell(style: .value1, reuseIdentifier: "cell")
         
         // MARK: доделай эту ебаторию с stackview
@@ -111,9 +111,7 @@ class EmptyViewController : UIViewController, UITableViewDataSource, UIPopoverPr
             
           
             prioiryButtons.translatesAutoresizingMaskIntoConstraints = false
-          //  prioiryButtons.axis = .horizontal
-            
-            
+    
             prioiryButtons.backgroundColor = UIColor.red
             
             prioiryButtons.addArrangedSubview(lowButton)
@@ -121,17 +119,9 @@ class EmptyViewController : UIViewController, UITableViewDataSource, UIPopoverPr
             prioiryButtons.addArrangedSubview(highButton)
             prioiryButtons.tag = indexPath.row
             prioiryButtons.spacing = 2
-           // prioiryButtons.alignment = .bottom
-           
-            
-          
-            
-           
-         //   cell.accessoryView?.center.x = 15
-            
+
             rowNum += 1
         } else{
-            
             
             cell.backgroundColor = UIColor.white
             cell.textLabel?.text = "Сделать до"
@@ -155,6 +145,7 @@ class EmptyViewController : UIViewController, UITableViewDataSource, UIPopoverPr
         
     }
     
+   
 }
     
 
