@@ -7,9 +7,14 @@
 
 import UIKit
 
-class EmptyViewController : UIViewController, UITableViewDataSource, UIPopoverPresentationControllerDelegate, UITableViewDelegate {
-     let t = ViewController()
-  
+protocol AddPageControllerDelegate {
+    func fillTheTableWith(Task: String)
+}
+
+class AddPageViewController : UIViewController, UITableViewDataSource, UIPopoverPresentationControllerDelegate, UITableViewDelegate {
+    
+    let t = ViewController()
+    var delegate: AddPageControllerDelegate?
     var taskText = ""
     
     func deleteButton() {
@@ -25,30 +30,31 @@ class EmptyViewController : UIViewController, UITableViewDataSource, UIPopoverPr
         view.addSubview(deleteButton)
     }
     
+    
     func enterTextField(){
         let mainTextField = UITextView(frame: CGRect(x: (Int(view.bounds.width) / 2) - ((Int(view.bounds.width) - 35) / 2),
-                                                      y: 80, width: Int(view.bounds.width) - 35, height: 150))
+                                                     y: 80, width: Int(view.bounds.width) - 35, height: 150))
         
-        mainTextField.text = "Что нужно сделать?"
+
+        mainTextField.text  = "Что нужно сделать?"
         mainTextField.layer.cornerRadius = 10
         mainTextField.font =  UIFont.systemFont(ofSize: 18)
         mainTextField.backgroundColor = UIColor.white
-         taskText = mainTextField.text
+        taskText = mainTextField.text ?? "нет задачи"
         view.addSubview(mainTextField)
     }
     
-     let table1: UITableView = {
-       
-         let table = UITableView(frame: CGRect(x: 18, y: 280, width: 379, height: 200), style: .insetGrouped)
-        table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+    let table1: UITableView = {
         
-
+        let table = UITableView(frame: CGRect(x: 18, y: 280, width: 379, height: 200), style: .insetGrouped)
+        table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         return table
     }()
-    
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         
+       
         let saveButton = UIBarButtonItem(title: "Сохранить", style: .plain, target: self, action: #selector(saveTapped))
         let cancelButton = UIBarButtonItem(title: "Отменить", style: .plain, target: self, action: #selector(cancelTapped))
         
@@ -58,11 +64,11 @@ class EmptyViewController : UIViewController, UITableViewDataSource, UIPopoverPr
         title = "Новое дело"
         enterTextField()
         view.backgroundColor = UIColor.systemGray6
-
+        
         view.addSubview(table1)
-
+        
         table1.dataSource = self
-      //  table.delegate = self
+        //  table.delegate = self
         
         deleteButton()
     }
@@ -73,19 +79,19 @@ class EmptyViewController : UIViewController, UITableViewDataSource, UIPopoverPr
     
     //MARK: это говно тоже переделай
     @objc func saveTapped(){
-        let vc = ViewController()
-        vc.cellText = taskText
-        self.dismiss(animated: true, completion: nil)
         
+        delegate?.fillTheTableWith(Task: taskText)
+
+       self.dismiss(animated: true, completion: nil)
     }
-  
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 2
     }
     
     var rowNum = 0
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
+        
         let cell = UITableViewCell(style: .value1, reuseIdentifier: "cell")
         
         // MARK: доделай эту ебаторию с stackview
@@ -101,17 +107,17 @@ class EmptyViewController : UIViewController, UITableViewDataSource, UIPopoverPr
             let highButton = UIButton()
             
             
-           
+            
             lowButton.setTitle("\u{024}", for: .normal)
             usuallyButton.setTitle("нет", for: .normal)
             highButton.setTitle("!!", for: .normal)
             highButton.titleLabel?.textColor = UIColor.red
-           
             
             
-          
+            
+            
             prioiryButtons.translatesAutoresizingMaskIntoConstraints = false
-    
+            
             prioiryButtons.backgroundColor = UIColor.red
             
             prioiryButtons.addArrangedSubview(lowButton)
@@ -119,7 +125,7 @@ class EmptyViewController : UIViewController, UITableViewDataSource, UIPopoverPr
             prioiryButtons.addArrangedSubview(highButton)
             prioiryButtons.tag = indexPath.row
             prioiryButtons.spacing = 2
-
+            
             rowNum += 1
         } else{
             
@@ -131,12 +137,12 @@ class EmptyViewController : UIViewController, UITableViewDataSource, UIPopoverPr
             switchView.tag = indexPath.row // for detect which row switch Changed
             switchView.addTarget(self, action: #selector(bla), for: .valueChanged)
             cell.accessoryView = switchView
-       
+            
             
             rowNum = 0
         }
         
-       
+        
         
         return cell
     }
@@ -145,8 +151,8 @@ class EmptyViewController : UIViewController, UITableViewDataSource, UIPopoverPr
         
     }
     
-   
-}
     
+}
 
-   
+
+

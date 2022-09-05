@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3282A26628C693CC00B31C64 /* JSONWork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3282A26528C693CC00B31C64 /* JSONWork.swift */; };
 		32CFA1AB289431D5009BFD38 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32CFA1AA289431D5009BFD38 /* AppDelegate.swift */; };
 		32CFA1AD289431D5009BFD38 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32CFA1AC289431D5009BFD38 /* SceneDelegate.swift */; };
 		32CFA1AF289431D5009BFD38 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32CFA1AE289431D5009BFD38 /* ViewController.swift */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3282A26528C693CC00B31C64 /* JSONWork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONWork.swift; sourceTree = "<group>"; };
 		32CFA1A7289431D5009BFD38 /* ToDo List.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ToDo List.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		32CFA1AA289431D5009BFD38 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		32CFA1AC289431D5009BFD38 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -54,6 +56,7 @@
 			isa = PBXGroup;
 			children = (
 				32CFA1BE28943305009BFD38 /* Data.swift */,
+				3282A26528C693CC00B31C64 /* JSONWork.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -69,11 +72,6 @@
 		3282A26428C68A8200B31C64 /* Other */ = {
 			isa = PBXGroup;
 			children = (
-				32CFA1AA289431D5009BFD38 /* AppDelegate.swift */,
-				32CFA1AC289431D5009BFD38 /* SceneDelegate.swift */,
-				32CFA1B3289431D6009BFD38 /* Assets.xcassets */,
-				32CFA1B5289431D6009BFD38 /* LaunchScreen.storyboard */,
-				32CFA1B8289431D6009BFD38 /* Info.plist */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -97,6 +95,11 @@
 		32CFA1A9289431D5009BFD38 /* ToDo List */ = {
 			isa = PBXGroup;
 			children = (
+				32CFA1AC289431D5009BFD38 /* SceneDelegate.swift */,
+				32CFA1B3289431D6009BFD38 /* Assets.xcassets */,
+				32CFA1B5289431D6009BFD38 /* LaunchScreen.storyboard */,
+				32CFA1B8289431D6009BFD38 /* Info.plist */,
+				32CFA1AA289431D5009BFD38 /* AppDelegate.swift */,
 				3282A26128C68A2F00B31C64 /* Controllers */,
 				3282A26228C68A4C00B31C64 /* Models */,
 				3282A26328C68A7000B31C64 /* Views */,
@@ -178,6 +181,7 @@
 			files = (
 				32CFA1AF289431D5009BFD38 /* ViewController.swift in Sources */,
 				32CFA1AB289431D5009BFD38 /* AppDelegate.swift in Sources */,
+				3282A26628C693CC00B31C64 /* JSONWork.swift in Sources */,
 				32CFA1C128969E3C009BFD38 /* AddPageViewController.swift in Sources */,
 				32CFA1AD289431D5009BFD38 /* SceneDelegate.swift in Sources */,
 				32CFA1BF28943305009BFD38 /* Data.swift in Sources */,

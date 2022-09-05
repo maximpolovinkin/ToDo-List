@@ -10,7 +10,13 @@ import UIKit
 
 var saveTap = false
 
-class ViewController: UIViewController, UITableViewDataSource, UIPopoverPresentationControllerDelegate {
+class ViewController: UIViewController, UITableViewDataSource,UIPopoverPresentationControllerDelegate, AddPageControllerDelegate,UINavigationControllerDelegate {
+    
+    func fillTheTableWith(Task: String) {
+        a.addTask(id: "0", task: Task, deadLine: .now, isCopmplete: false, createDate: .now)
+        table.reloadData()
+    }
+    
    
     var cellText = ""
     let a = FileCache(a: 1)
@@ -30,27 +36,29 @@ class ViewController: UIViewController, UITableViewDataSource, UIPopoverPresenta
     }
 
      let table: UITableView = {
-        let table = UITableView()
+         let table = UITableView(frame: CGRect(), style: .insetGrouped)
         table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         return table
     }()
-    
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Мои дела"
-      
+       
         view.backgroundColor = UIColor.systemGray6
         
         view.addSubview(table)
         table.dataSource = self
-        add(text: cellText)
-        table.reloadData()
+       
+        
     }
     
    
     @objc func addTapped(sender: UIButton!){
-        let rootVC = EmptyViewController()
+        
+        let rootVC = AddPageViewController()
         let navigationController = UINavigationController(rootViewController: rootVC)
+        rootVC.delegate = self
         
         present(navigationController, animated: true)
     }
@@ -69,6 +77,7 @@ class ViewController: UIViewController, UITableViewDataSource, UIPopoverPresenta
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print( a.tasks.count)
         return a.tasks.count
     }
     
