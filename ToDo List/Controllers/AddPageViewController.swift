@@ -17,10 +17,17 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
     var delegate: AddPageControllerDelegate?
     var taskText = ""
     var mainTextField = UITextField()
+    var lowButton = UIButton()
+    var usuallyButton = UIButton()
+    var highButton = UIButton()
+    var date = UITextField()
+    let calendar = UIDatePicker()
+    let switchView = UISwitch(frame: .zero)
+    
     
     func deleteButton() {
         let deleteButton = UIButton(frame: CGRect(x: (view.bounds.width / 2) - 189, y: 450 , width: 379, height: 50))
-        deleteButton.addTarget(self, action: #selector(bla), for: UIControl.Event.touchUpInside)
+        deleteButton.addTarget(self, action: #selector(lowTapped), for: UIControl.Event.touchUpInside)
         
         deleteButton.setTitle("Удалить", for: .normal)
         deleteButton.backgroundColor = UIColor.white
@@ -50,6 +57,7 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
         
         let table = UITableView(frame: CGRect(x: 0, y: 280, width: 390, height: 200), style: .insetGrouped)
         table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+       
         
         return table
     }()
@@ -66,7 +74,7 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
         title = "Новое дело"
         enterTextField()
         view.backgroundColor = UIColor.systemGray6
-        
+      
         view.addSubview(table1)
         table1.dataSource = self
        
@@ -104,15 +112,17 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
             prioiryButtons.frame.size = CGSize(width: 100, height: 30)
           
 
-            let lowButton =  UIButton()
+            lowButton =  UIButton()
             lowButton.bounds.size = CGSize(width: 40, height: 30)
-          
+            lowButton.addTarget(self, action: #selector(lowTapped), for: UIControl.Event.touchUpInside)
             
-            let usuallyButton =  UIButton()
-            lowButton.bounds.size = CGSize(width: 40, height: 30)
+            usuallyButton =  UIButton()
+            usuallyButton.bounds.size = CGSize(width: 40, height: 30)
+            usuallyButton.addTarget(self, action: #selector(usuallyTapped), for: UIControl.Event.touchUpInside)
             
-            let highButton =  UIButton()
-            lowButton.bounds.size = CGSize(width: 40, height: 30)
+            highButton =  UIButton()
+            highButton.bounds.size = CGSize(width: 40, height: 30)
+            highButton.addTarget(self, action: #selector(highTapped), for: UIControl.Event.touchUpInside)
 
             lowButton.setTitle("\u{024}", for: .normal)
             lowButton.backgroundColor = UIColor.systemGray5
@@ -143,15 +153,31 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
             
             rowNum += 1
         } else {
+          
+            mainTextField.inputView = calendar
+            calendar.datePickerMode = .date
             
+            date.font = UIFont(name: date.font!.fontName, size: 12)
+            date.text = "sdfsdf"
+            date.frame.size = CGSize(width: 100, height: 30)
+
             cell.backgroundColor = UIColor.white
             cell.textLabel?.text = "Сделать до"
             
-            let switchView = UISwitch(frame: .zero)
+            
+           
+        
             switchView.setOn(false, animated: true)
             switchView.tag = indexPath.row // for detect which row switch Changed
-            switchView.addTarget(self, action: #selector(bla), for: .valueChanged)
+            switchView.addTarget(self, action: #selector(timeSwitch), for: .valueChanged)
             cell.accessoryView = switchView
+           // cell.addSubview(calendar)
+            
+            cell.addSubview(calendar)
+           
+            
+            calendar.isHidden = true
+            
             
             rowNum = 0
         }
@@ -159,10 +185,38 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
         return cell
     }
     
-    @objc func bla(){
+    @objc func timeSwitch() {
+        if switchView.isOn {
+            table1.rowHeight = UITableView.automaticDimension
+            table1.estimatedRowHeight = 80
+            table1.frame.size = CGSize(width: 390, height: 260)
+            calendar.tintColor = UIColor.systemBlue
+            calendar.isHidden = false
+            calendar.frame = CGRect(x: 1, y: 20, width: 80, height: 22)
+        } else {
+            calendar.isHidden = true
+        }
+       
         
     }
     
+    @objc func lowTapped(){
+        lowButton.backgroundColor = UIColor.white
+        highButton.backgroundColor = UIColor.systemGray5
+        usuallyButton.backgroundColor = UIColor.systemGray5
+    }
+    
+    @objc func usuallyTapped() {
+        usuallyButton.backgroundColor = UIColor.white
+        highButton.backgroundColor = UIColor.systemGray5
+        lowButton.backgroundColor = UIColor.systemGray5
+    }
+    
+    @objc func highTapped() {
+        highButton.backgroundColor = UIColor.white
+        usuallyButton.backgroundColor = UIColor.systemGray5
+        lowButton.backgroundColor = UIColor.systemGray5
+    }
     
 }
 
