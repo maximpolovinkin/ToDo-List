@@ -16,6 +16,7 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
     let t = ViewController()
     var delegate: AddPageControllerDelegate?
     var taskText = ""
+    var mainTextField = UITextField()
     
     func deleteButton() {
         let deleteButton = UIButton(frame: CGRect(x: (view.bounds.width / 2) - 189, y: 450 , width: 379, height: 50))
@@ -30,31 +31,32 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
         view.addSubview(deleteButton)
     }
     
-    
+   
     func enterTextField(){
-        let mainTextField = UITextView(frame: CGRect(x: (Int(view.bounds.width) / 2) - ((Int(view.bounds.width) - 35) / 2),
+         mainTextField = UITextField(frame: CGRect(x: (Int(view.bounds.width) / 2) - ((Int(view.bounds.width) - 35) / 2),
                                                      y: 80, width: Int(view.bounds.width) - 35, height: 150))
         
-
-        mainTextField.text  = "Что нужно сделать?"
+        mainTextField.placeholder = "Что нужно сделать?"
+        mainTextField.textAlignment = .left
+        mainTextField.contentVerticalAlignment = .top
         mainTextField.layer.cornerRadius = 10
         mainTextField.font =  UIFont.systemFont(ofSize: 18)
         mainTextField.backgroundColor = UIColor.white
-        taskText = mainTextField.text ?? "нет задачи"
+       print( (Int(view.bounds.width) / 2) - ((Int(view.bounds.width) - 35) / 2))
         view.addSubview(mainTextField)
     }
     
     let table1: UITableView = {
         
-        let table = UITableView(frame: CGRect(x: 18, y: 280, width: 379, height: 200), style: .insetGrouped)
+        let table = UITableView(frame: CGRect(x: 0, y: 280, width: 390, height: 200), style: .insetGrouped)
         table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        
         return table
     }()
-   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-       
         let saveButton = UIBarButtonItem(title: "Сохранить", style: .plain, target: self, action: #selector(saveTapped))
         let cancelButton = UIBarButtonItem(title: "Отменить", style: .plain, target: self, action: #selector(cancelTapped))
         
@@ -66,10 +68,8 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
         view.backgroundColor = UIColor.systemGray6
         
         view.addSubview(table1)
-        
         table1.dataSource = self
-        //  table.delegate = self
-        
+       
         deleteButton()
     }
     
@@ -77,12 +77,13 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
         self.dismiss(animated: true, completion: nil)
     }
     
-    //MARK: это говно тоже переделай
     @objc func saveTapped(){
+        taskText = mainTextField.text ?? "нет задачи"
+        print(taskText)
         
         delegate?.fillTheTableWith(Task: taskText)
-
-       self.dismiss(animated: true, completion: nil)
+        
+        self.dismiss(animated: true, completion: nil)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -93,41 +94,55 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = UITableViewCell(style: .value1, reuseIdentifier: "cell")
-        
-        // MARK: доделай эту ебаторию с stackview
-        if rowNum == 0{
+      
+        if rowNum == 0 {
             
             cell.backgroundColor = UIColor.white
             cell.textLabel?.text = "Важность"
+
+            let prioiryButtons = UIStackView()
+            prioiryButtons.frame.size = CGSize(width: 100, height: 30)
+          
+
+            let lowButton =  UIButton()
+            lowButton.bounds.size = CGSize(width: 40, height: 30)
+          
             
-            let prioiryButtons = UIStackView(frame: CGRect(x:0, y: 0, width: 15, height: 15))
+            let usuallyButton =  UIButton()
+            lowButton.bounds.size = CGSize(width: 40, height: 30)
             
-            let lowButton = UIButton()
-            let usuallyButton = UIButton()
-            let highButton = UIButton()
-            
-            
-            
+            let highButton =  UIButton()
+            lowButton.bounds.size = CGSize(width: 40, height: 30)
+
             lowButton.setTitle("\u{024}", for: .normal)
+            lowButton.backgroundColor = UIColor.systemGray5
+            lowButton.setTitleColor(UIColor.black, for: .normal)
+            
             usuallyButton.setTitle("нет", for: .normal)
+            usuallyButton.backgroundColor = UIColor.systemGray5
+            usuallyButton.setTitleColor(UIColor.black, for: .normal)
+            
             highButton.setTitle("!!", for: .normal)
-            highButton.titleLabel?.textColor = UIColor.red
+            highButton.backgroundColor = UIColor.systemGray5
+            highButton.setTitleColor(UIColor.red, for: .normal)
+
+          
             
+         
             
-            
-            
-            prioiryButtons.translatesAutoresizingMaskIntoConstraints = false
-            
-            prioiryButtons.backgroundColor = UIColor.red
-            
-            prioiryButtons.addArrangedSubview(lowButton)
             prioiryButtons.addArrangedSubview(usuallyButton)
+            prioiryButtons.addArrangedSubview(lowButton)
             prioiryButtons.addArrangedSubview(highButton)
-            prioiryButtons.tag = indexPath.row
-            prioiryButtons.spacing = 2
+            prioiryButtons.setCustomSpacing(1, after: lowButton)
+            prioiryButtons.setCustomSpacing(2, after: usuallyButton)
+            prioiryButtons.setCustomSpacing(0, after: highButton)
+
+            prioiryButtons.backgroundColor = UIColor.systemGray5
+            
+            cell.accessoryView = prioiryButtons
             
             rowNum += 1
-        } else{
+        } else {
             
             cell.backgroundColor = UIColor.white
             cell.textLabel?.text = "Сделать до"
@@ -138,11 +153,8 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
             switchView.addTarget(self, action: #selector(bla), for: .valueChanged)
             cell.accessoryView = switchView
             
-            
             rowNum = 0
         }
-        
-        
         
         return cell
     }

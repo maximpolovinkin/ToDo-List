@@ -53,7 +53,6 @@ class ViewController: UIViewController, UITableViewDataSource,UIPopoverPresentat
         
     }
     
-   
     @objc func addTapped(sender: UIButton!){
         
         let rootVC = AddPageViewController()
@@ -67,17 +66,16 @@ class ViewController: UIViewController, UITableViewDataSource,UIPopoverPresentat
         self.a.addTask(id: "1", task: text, deadLine: nil, isCopmplete: false, createDate: Date.now)
         self.table.reloadData()
     }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         table.frame = view.bounds
         addButton()
         table.reloadData()
-        add(text: cellText)
-        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print( a.tasks.count)
+        print(a.tasks.count)
         return a.tasks.count
     }
     
@@ -87,10 +85,4 @@ class ViewController: UIViewController, UITableViewDataSource,UIPopoverPresentat
         cell.textLabel?.text = a.tasks[indexPath.row].task
         return cell
     }
-    
-   
-    
-
-
 }
-

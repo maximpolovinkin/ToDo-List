@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TodoItem{
+struct TodoItem {
     
     let id: String
     var task: String
