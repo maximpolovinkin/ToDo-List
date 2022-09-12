@@ -10,13 +10,19 @@ import UIKit
 
 var saveTap = false
 
-class ViewController: UIViewController, UITableViewDataSource,UIPopoverPresentationControllerDelegate, AddPageControllerDelegate,UINavigationControllerDelegate {
+class ViewController: UIViewController, UITableViewDataSource,UIPopoverPresentationControllerDelegate, AddPageControllerDelegate,UINavigationControllerDelegate, UITableViewDelegate {
     
-    func fillTheTableWith(Task: String) {
-        a.addTask(id: "0", task: Task, deadLine: .now, isCopmplete: false, createDate: .now)
+    func fillTheTableWith(Task: String,  DeadLine Deadline: Date?) {
+        if let Deadline = Deadline {
+            a.addTask(id: "0", task: Task, deadLine: Deadline, isCopmplete: false, createDate: .now)
+        } else {
+            a.addTask(id: "0", task: Task, deadLine: nil, isCopmplete: false, createDate: .now)
+        }
+       
         table.reloadData()
     }
     
+    var delegate = UITableViewDelegate.self
    
     var cellText = ""
     let a = FileCache(a: 1)
@@ -37,8 +43,10 @@ class ViewController: UIViewController, UITableViewDataSource,UIPopoverPresentat
 
      let table: UITableView = {
          let table = UITableView(frame: CGRect(), style: .insetGrouped)
-        table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        return table
+         table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+         table.rowHeight = 60
+         
+         return table
     }()
    
     override func viewDidLoad() {
@@ -62,11 +70,6 @@ class ViewController: UIViewController, UITableViewDataSource,UIPopoverPresentat
         present(navigationController, animated: true)
     }
      
-    func add(text: String){
-        self.a.addTask(id: "1", task: text, deadLine: nil, isCopmplete: false, createDate: Date.now)
-        self.table.reloadData()
-    }
-    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         table.frame = view.bounds
@@ -75,14 +78,26 @@ class ViewController: UIViewController, UITableViewDataSource,UIPopoverPresentat
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(a.tasks.count)
         return a.tasks.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
         cell.backgroundColor = UIColor.white
         cell.textLabel?.text = a.tasks[indexPath.row].task
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "⏰ YY.MM.dd"
+        if let deadLine = a.tasks[indexPath.row].deadLine {
+            cell.textLabel?.text = a.tasks[indexPath.row].task
+            cell.detailTextLabel?.text = dateFormatter.string(from: deadLine)
+            cell.detailTextLabel?.textColor = UIColor.red
+        } else {
+            cell.textLabel?.text = a.tasks[indexPath.row].task
+        }
+       
         return cell
     }
+   
 }

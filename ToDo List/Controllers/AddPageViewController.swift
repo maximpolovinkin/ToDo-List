@@ -8,7 +8,7 @@
 import UIKit
 
 protocol AddPageControllerDelegate {
-    func fillTheTableWith(Task: String)
+    func fillTheTableWith(Task: String, DeadLine: Date?)
 }
 
 class AddPageViewController : UIViewController, UITableViewDataSource, UIPopoverPresentationControllerDelegate, UITableViewDelegate {
@@ -23,6 +23,8 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
     var date = UITextField()
     let calendar = UIDatePicker()
     let switchView = UISwitch(frame: .zero)
+    var selectedIndex = NSIndexPath()
+    var deadline: Date?
     
     
     func deleteButton() {
@@ -57,8 +59,7 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
         
         let table = UITableView(frame: CGRect(x: 0, y: 280, width: 390, height: 200), style: .insetGrouped)
         table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-       
-        
+      
         return table
     }()
     
@@ -89,7 +90,7 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
         taskText = mainTextField.text ?? "нет задачи"
         print(taskText)
         
-        delegate?.fillTheTableWith(Task: taskText)
+        delegate?.fillTheTableWith(Task: taskText, DeadLine: deadline)
         
         self.dismiss(animated: true, completion: nil)
     }
@@ -101,7 +102,7 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
     var rowNum = 0
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = UITableViewCell(style: .value1, reuseIdentifier: "cell")
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
       
         if rowNum == 0 {
             
@@ -124,80 +125,77 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
             highButton.bounds.size = CGSize(width: 40, height: 30)
             highButton.addTarget(self, action: #selector(highTapped), for: UIControl.Event.touchUpInside)
 
-            lowButton.setTitle("\u{024}", for: .normal)
+            lowButton.setTitle("↓", for: .normal)
             lowButton.backgroundColor = UIColor.systemGray5
             lowButton.setTitleColor(UIColor.black, for: .normal)
+            //lowButton.layer.borderWidth = 1
+            lowButton.layer.cornerRadius = 5
             
             usuallyButton.setTitle("нет", for: .normal)
             usuallyButton.backgroundColor = UIColor.systemGray5
             usuallyButton.setTitleColor(UIColor.black, for: .normal)
+           // usuallyButton.layer.borderWidth = 1
+            usuallyButton.layer.cornerRadius = 5
             
-            highButton.setTitle("!!", for: .normal)
+            highButton.setTitle("‼️", for: .normal)
             highButton.backgroundColor = UIColor.systemGray5
             highButton.setTitleColor(UIColor.red, for: .normal)
+           // highButton.layer.borderWidth = 1
+            highButton.layer.cornerRadius = 5
 
-          
-            
-         
-            
-            prioiryButtons.addArrangedSubview(usuallyButton)
             prioiryButtons.addArrangedSubview(lowButton)
+            prioiryButtons.addArrangedSubview(usuallyButton)
             prioiryButtons.addArrangedSubview(highButton)
-            prioiryButtons.setCustomSpacing(1, after: lowButton)
-            prioiryButtons.setCustomSpacing(2, after: usuallyButton)
+            prioiryButtons.setCustomSpacing(4, after: lowButton)
+            prioiryButtons.setCustomSpacing(4, after: usuallyButton)
             prioiryButtons.setCustomSpacing(0, after: highButton)
-
-            prioiryButtons.backgroundColor = UIColor.systemGray5
+            prioiryButtons.layer.cornerRadius = 5
+            prioiryButtons.backgroundColor = UIColor.systemGray6
             
             cell.accessoryView = prioiryButtons
+           
             
             rowNum += 1
         } else {
-          
-            mainTextField.inputView = calendar
-            calendar.datePickerMode = .date
             
-            date.font = UIFont(name: date.font!.fontName, size: 12)
-            date.text = "sdfsdf"
-            date.frame.size = CGSize(width: 100, height: 30)
-
+            calendar.datePickerMode = .date
+    
             cell.backgroundColor = UIColor.white
             cell.textLabel?.text = "Сделать до"
-            
-            
+            cell.textLabel?.numberOfLines = 2
            
-        
+           
             switchView.setOn(false, animated: true)
             switchView.tag = indexPath.row // for detect which row switch Changed
             switchView.addTarget(self, action: #selector(timeSwitch), for: .valueChanged)
+            
             cell.accessoryView = switchView
-           // cell.addSubview(calendar)
             
-            cell.addSubview(calendar)
-           
-            
+            cell.addSubview(calendar) // BETA VERSION
+ 
             calendar.isHidden = true
-            
             
             rowNum = 0
         }
+        
+        cell.selectionStyle = .none
         
         return cell
     }
     
     @objc func timeSwitch() {
         if switchView.isOn {
-            table1.rowHeight = UITableView.automaticDimension
-            table1.estimatedRowHeight = 80
-            table1.frame.size = CGSize(width: 390, height: 260)
-            calendar.tintColor = UIColor.systemBlue
             calendar.isHidden = false
-            calendar.frame = CGRect(x: 1, y: 20, width: 80, height: 22)
+            calendar.frame = CGRect(x: 85, y: 4, width: 180, height: 35)
+            calendar.preferredDatePickerStyle = .compact
+            calendar.locale = .current
+            calendar.addTarget(self, action: #selector(timePicked), for: .valueChanged)
+            deadline = calendar.date
+            
         } else {
             calendar.isHidden = true
+            deadline = nil
         }
-       
-        
     }
     
     @objc func lowTapped(){
@@ -217,6 +215,11 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
         usuallyButton.backgroundColor = UIColor.systemGray5
         lowButton.backgroundColor = UIColor.systemGray5
     }
+    
+    @objc func timePicked() {
+        deadline = calendar.date
+    }
+
     
 }
 
