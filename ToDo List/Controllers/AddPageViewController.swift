@@ -8,7 +8,7 @@
 import UIKit
 
 protocol AddPageControllerDelegate {
-    func fillTheTableWith(Task: String, DeadLine: Date?)
+    func fillTheTableWith(Task: String, DeadLine: Date?, Importance: String, isEdit: Bool)
 }
 
 class AddPageViewController : UIViewController, UITableViewDataSource, UIPopoverPresentationControllerDelegate, UITableViewDelegate {
@@ -21,24 +21,11 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
     var usuallyButton = UIButton()
     var highButton = UIButton()
     var date = UITextField()
-    let calendar = UIDatePicker()
+    let calendar = UIDatePicker(frame: CGRect(x: 35, y: 480, width: 390, height: 480))
     let switchView = UISwitch(frame: .zero)
     var selectedIndex = NSIndexPath()
     var deadline: Date?
-    
-    
-    func deleteButton() {
-        let deleteButton = UIButton(frame: CGRect(x: (view.bounds.width / 2) - 189, y: 450 , width: 379, height: 50))
-        deleteButton.addTarget(self, action: #selector(lowTapped), for: UIControl.Event.touchUpInside)
-        
-        deleteButton.setTitle("Удалить", for: .normal)
-        deleteButton.backgroundColor = UIColor.white
-        deleteButton.setTitleColor(UIColor.red, for: .normal)
-        deleteButton.titleLabel?.font = UIFont.systemFont(ofSize: 18)
-        deleteButton.contentHorizontalAlignment = .center
-        deleteButton.layer.cornerRadius = deleteButton.layer.bounds.height / 2
-        view.addSubview(deleteButton)
-    }
+    var importance: String = ""
     
    
     func enterTextField(){
@@ -78,20 +65,36 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
       
         view.addSubview(table1)
         table1.dataSource = self
-       
-        deleteButton()
+        view.addSubview(calendar)
+      //  calendar.frame = CGRect( = view.frame.width
+      
     }
     
     @objc func cancelTapped(){
         self.dismiss(animated: true, completion: nil)
     }
     
-    @objc func saveTapped(){
+    @objc func saveTapped(isEdit: Bool){
         taskText = mainTextField.text ?? "нет задачи"
-        print(taskText)
         
-        delegate?.fillTheTableWith(Task: taskText, DeadLine: deadline)
+        if lowButton.isFocused {
+            taskText += "↓"
+            importance = "low"
+        }
         
+        if usuallyButton.isSelected {
+            taskText += ""
+            importance = "usially"
+        }
+        
+        if highButton.isSelected {
+            importance = "high"
+            taskText += "‼️"
+        }
+        
+        delegate?.fillTheTableWith(Task: taskText, DeadLine: deadline, Importance: importance, isEdit: isEditPressed)
+        isEditPressed = false
+
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -112,7 +115,6 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
             let prioiryButtons = UIStackView()
             prioiryButtons.frame.size = CGSize(width: 100, height: 30)
           
-
             lowButton =  UIButton()
             lowButton.bounds.size = CGSize(width: 40, height: 30)
             lowButton.addTarget(self, action: #selector(lowTapped), for: UIControl.Event.touchUpInside)
@@ -128,19 +130,16 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
             lowButton.setTitle("↓", for: .normal)
             lowButton.backgroundColor = UIColor.systemGray5
             lowButton.setTitleColor(UIColor.black, for: .normal)
-            //lowButton.layer.borderWidth = 1
             lowButton.layer.cornerRadius = 5
             
             usuallyButton.setTitle("нет", for: .normal)
             usuallyButton.backgroundColor = UIColor.systemGray5
             usuallyButton.setTitleColor(UIColor.black, for: .normal)
-           // usuallyButton.layer.borderWidth = 1
             usuallyButton.layer.cornerRadius = 5
             
             highButton.setTitle("‼️", for: .normal)
             highButton.backgroundColor = UIColor.systemGray5
             highButton.setTitleColor(UIColor.red, for: .normal)
-           // highButton.layer.borderWidth = 1
             highButton.layer.cornerRadius = 5
 
             prioiryButtons.addArrangedSubview(lowButton)
@@ -153,8 +152,6 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
             prioiryButtons.backgroundColor = UIColor.systemGray6
             
             cell.accessoryView = prioiryButtons
-           
-            
             rowNum += 1
         } else {
             
@@ -171,7 +168,7 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
             
             cell.accessoryView = switchView
             
-            cell.addSubview(calendar) // BETA VERSION
+           // cell.addSubview(calendar) // BETA VERSION
  
             calendar.isHidden = true
             
@@ -186,8 +183,8 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
     @objc func timeSwitch() {
         if switchView.isOn {
             calendar.isHidden = false
-            calendar.frame = CGRect(x: 85, y: 4, width: 180, height: 35)
-            calendar.preferredDatePickerStyle = .compact
+           // calendar.frame = CGRect(x: 85, y: 4, width: 180, height: 35)
+            calendar.preferredDatePickerStyle = .wheels
             calendar.locale = .current
             calendar.addTarget(self, action: #selector(timePicked), for: .valueChanged)
             deadline = calendar.date
@@ -202,26 +199,25 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
         lowButton.backgroundColor = UIColor.white
         highButton.backgroundColor = UIColor.systemGray5
         usuallyButton.backgroundColor = UIColor.systemGray5
+        importance = "low"
     }
     
     @objc func usuallyTapped() {
         usuallyButton.backgroundColor = UIColor.white
         highButton.backgroundColor = UIColor.systemGray5
         lowButton.backgroundColor = UIColor.systemGray5
+        importance = "usially"
     }
     
     @objc func highTapped() {
         highButton.backgroundColor = UIColor.white
         usuallyButton.backgroundColor = UIColor.systemGray5
         lowButton.backgroundColor = UIColor.systemGray5
+        importance = "high"
+       
     }
     
     @objc func timePicked() {
         deadline = calendar.date
     }
-
-    
 }
-
-
-

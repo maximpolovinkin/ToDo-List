@@ -36,7 +36,6 @@ class FileCache {
     
     func addTask(id: String, task: String, deadLine: Date?, isCopmplete: Bool, createDate: Date){
         if let deadLine = deadLine {
-            let defaults = UserDefaults()
             let newTask = TodoItem(id: id, task: task, deadLine: deadLine, isCopmplete: isCopmplete, createDate: createDate)
             tasks.append(newTask)
            
@@ -44,8 +43,17 @@ class FileCache {
             let newTask = TodoItem(id: id, task: task, isCopmplete: isCopmplete, createDate: createDate)
             tasks.append(newTask)
         }
-
-       
+    }
+    
+    func editTask(numberOfTask: Int, id: String, task: String, deadLine: Date?, isCopmplete: Bool, createDate: Date){
+        if let deadLine = deadLine {
+        tasks[numberOfTask] = TodoItem(id: id, task: task, deadLine: deadLine, isCopmplete: isCopmplete, createDate: createDate)
+            
+           
+        } else {
+            tasks[numberOfTask] = TodoItem(id: id, task: task, isCopmplete: isCopmplete, createDate: createDate)
+          
+        }
     }
 
     func deleteTask(Id: String){
