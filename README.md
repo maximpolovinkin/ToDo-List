@@ -1,5 +1,5 @@
 <div>
-<h1>An application that will help you save your tasks, set their priority and set a date. You can edit, delete tasks and mark them as completed</>
+<h1>An application that will help you save your tasks, set their priority and set a date. You can edit, delete tasks and mark them as completed. Supported Dark mode</>
  </div>
  <div>
  <img src="https://sun1.userapi.com/sun1-83/s/v1/ig2/rkHz7DqRJtCcmSaa5mJndg4VMPT1rD6-rByVXHCnv92Yduo21IPpT_EzIcLYQaR105IadICZv1eviF0p7DVXNE3l.jpg?size=998x2160&quality=96&type=album" height="500" align="center"/>
