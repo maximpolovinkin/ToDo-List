@@ -11,7 +11,7 @@ protocol AddPageControllerDelegate {
     func fillTheTableWith(Task: String, DeadLine: Date?, Importance: String, isEdit: Bool)
 }
 
-class AddPageViewController : UIViewController, UITableViewDataSource, UIPopoverPresentationControllerDelegate, UITableViewDelegate {
+class AddPageViewController : UIViewController, UITableViewDataSource, UIPopoverPresentationControllerDelegate, UITableViewDelegate, UIGestureRecognizerDelegate {
     
     let t = ViewController()
     var delegate: AddPageControllerDelegate?
@@ -38,7 +38,7 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
         mainTextField.layer.cornerRadius = 10
         mainTextField.font =  UIFont.systemFont(ofSize: 18)
         mainTextField.backgroundColor = UIColor.white
-       print( (Int(view.bounds.width) / 2) - ((Int(view.bounds.width) - 35) / 2))
+        mainTextField.backgroundColor = UIColor(named: "otherColor")
         view.addSubview(mainTextField)
     }
     
@@ -49,12 +49,16 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
       
         return table
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let saveButton = UIBarButtonItem(title: "Сохранить", style: .plain, target: self, action: #selector(saveTapped))
         let cancelButton = UIBarButtonItem(title: "Отменить", style: .plain, target: self, action: #selector(cancelTapped))
+        
+     
+        
+
         
         navigationItem.rightBarButtonItem = saveButton
         navigationItem.leftBarButtonItem = cancelButton
@@ -66,9 +70,22 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
         view.addSubview(table1)
         table1.dataSource = self
         view.addSubview(calendar)
-      //  calendar.frame = CGRect( = view.frame.width
+        
       
     }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let touch = touches.first as? UITouch {
+            view.endEditing(true)
+        }
+        
+        super.touchesBegan(touches, with: event)
+    }
+    
+   
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+            return true
+        }
     
     @objc func cancelTapped(){
         self.dismiss(animated: true, completion: nil)
@@ -118,10 +135,12 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
             lowButton =  UIButton()
             lowButton.bounds.size = CGSize(width: 40, height: 30)
             lowButton.addTarget(self, action: #selector(lowTapped), for: UIControl.Event.touchUpInside)
+            lowButton.titleLabel?.textColor = UIColor(named: "otherColor")
             
             usuallyButton =  UIButton()
             usuallyButton.bounds.size = CGSize(width: 40, height: 30)
             usuallyButton.addTarget(self, action: #selector(usuallyTapped), for: UIControl.Event.touchUpInside)
+            lowButton.titleLabel?.textColor = UIColor(named: "otherColor")
             
             highButton =  UIButton()
             highButton.bounds.size = CGSize(width: 40, height: 30)
@@ -168,14 +187,13 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
             
             cell.accessoryView = switchView
             
-           // cell.addSubview(calendar) // BETA VERSION
- 
             calendar.isHidden = true
             
             rowNum = 0
         }
         
         cell.selectionStyle = .none
+        cell.backgroundColor = UIColor(named: "otherColor")
         
         return cell
     }
@@ -183,7 +201,6 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
     @objc func timeSwitch() {
         if switchView.isOn {
             calendar.isHidden = false
-           // calendar.frame = CGRect(x: 85, y: 4, width: 180, height: 35)
             calendar.preferredDatePickerStyle = .wheels
             calendar.locale = .current
             calendar.addTarget(self, action: #selector(timePicked), for: .valueChanged)

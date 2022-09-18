@@ -104,6 +104,7 @@ class ViewController: UIViewController, UITableViewDataSource,UIPopoverPresentat
         table.frame = view.bounds
         addButton()
         table.reloadData()
+        view.backgroundColor = UIColor(named: "BackgroundColor")
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -140,6 +141,7 @@ class ViewController: UIViewController, UITableViewDataSource,UIPopoverPresentat
             cell.textLabel?.text! = a.tasks[indexPath.row].task
         }
         cell.selectionStyle = .none
+        cell.backgroundColor = UIColor(named: "otherColor")
         return cell
     }
     
