@@ -144,16 +144,28 @@ class ViewController: UIViewController, UITableViewDataSource,UIPopoverPresentat
         cell.backgroundColor = UIColor(named: "otherColor")
         return cell
     }
-    
+    var doneCheck = false
     // Right Swipe
         func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
             
             let action = UIContextualAction(style: .normal, title: "✅") { [weak self] (action, view, completionHandler) in
                 
-                self?.table.cellForRow(at: indexPath)?.textLabel?.textColor = UIColor.systemGray3
-                self?.table.cellForRow(at: indexPath)?.textLabel?.attributedText = NSAttributedString(string: (self?.table.cellForRow(at: indexPath)?.textLabel?.text)!, attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue])
-                completionHandler(true)
+                if !self!.doneCheck {
+                    self?.table.cellForRow(at: indexPath)?.textLabel?.textColor = UIColor.systemGray3
+                    self?.table.cellForRow(at: indexPath)?.textLabel?.attributedText = NSAttributedString(string: (self?.table.cellForRow(at: indexPath)?.textLabel?.text)!, attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue])
+                    self?.doneCheck = true
+                    completionHandler(true)
+                } else {
+                    
+                    self?.table.cellForRow(at: indexPath)?.textLabel?.attributedText = NSAttributedString(string: (self?.table.cellForRow(at: indexPath)?.textLabel?.text)!, attributes: [NSAttributedString.Key.strikethroughStyle: nil])
+                    
+                    self?.table.cellForRow(at: indexPath)?.textLabel?.textColor = UIColor(named: "textColor")
+                   
+                    self?.doneCheck = false
+                    completionHandler(true)
+                }
             }
+            
             action.backgroundColor = .systemGreen
             
             return UISwipeActionsConfiguration(actions: [action])

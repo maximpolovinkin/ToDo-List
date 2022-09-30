@@ -32,7 +32,7 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
          mainTextField = UITextField(frame: CGRect(x: (Int(view.bounds.width) / 2) - ((Int(view.bounds.width) - 35) / 2),
                                                      y: 80, width: Int(view.bounds.width) - 35, height: 150))
         
-        mainTextField.placeholder = "Что нужно сделать?"
+        mainTextField.placeholder = " Что нужно сделать?"
         mainTextField.textAlignment = .left
         mainTextField.contentVerticalAlignment = .top
         mainTextField.layer.cornerRadius = 10
@@ -137,6 +137,7 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
             lowButton.addTarget(self, action: #selector(lowTapped), for: UIControl.Event.touchUpInside)
             lowButton.titleLabel?.textColor = UIColor(named: "otherColor")
             
+            
             usuallyButton =  UIButton()
             usuallyButton.bounds.size = CGSize(width: 40, height: 30)
             usuallyButton.addTarget(self, action: #selector(usuallyTapped), for: UIControl.Event.touchUpInside)
@@ -148,12 +149,12 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
 
             lowButton.setTitle("↓", for: .normal)
             lowButton.backgroundColor = UIColor.systemGray5
-            lowButton.setTitleColor(UIColor.black, for: .normal)
+            lowButton.setTitleColor(UIColor(named: "textColor"), for: .normal)
             lowButton.layer.cornerRadius = 5
             
             usuallyButton.setTitle("нет", for: .normal)
             usuallyButton.backgroundColor = UIColor.systemGray5
-            usuallyButton.setTitleColor(UIColor.black, for: .normal)
+            usuallyButton.setTitleColor(UIColor(named: "textColor"), for: .normal)
             usuallyButton.layer.cornerRadius = 5
             
             highButton.setTitle("‼️", for: .normal)
@@ -213,21 +214,21 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
     }
     
     @objc func lowTapped(){
-        lowButton.backgroundColor = UIColor.white
+        lowButton.backgroundColor = UIColor(named: "otherColor")
         highButton.backgroundColor = UIColor.systemGray5
         usuallyButton.backgroundColor = UIColor.systemGray5
         importance = "low"
     }
     
     @objc func usuallyTapped() {
-        usuallyButton.backgroundColor = UIColor.white
+        usuallyButton.backgroundColor = UIColor(named: "otherColor")
         highButton.backgroundColor = UIColor.systemGray5
         lowButton.backgroundColor = UIColor.systemGray5
         importance = "usially"
     }
     
     @objc func highTapped() {
-        highButton.backgroundColor = UIColor.white
+        highButton.backgroundColor = UIColor(named: "otherColor")
         usuallyButton.backgroundColor = UIColor.systemGray5
         lowButton.backgroundColor = UIColor.systemGray5
         importance = "high"

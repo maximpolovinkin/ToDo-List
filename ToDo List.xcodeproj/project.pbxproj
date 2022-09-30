@@ -69,13 +69,6 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		3282A26428C68A8200B31C64 /* Other */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Other;
-			sourceTree = "<group>";
-		};
 		32CFA19E289431D5009BFD38 = {
 			isa = PBXGroup;
 			children = (
@@ -103,7 +96,6 @@
 				3282A26128C68A2F00B31C64 /* Controllers */,
 				3282A26228C68A4C00B31C64 /* Models */,
 				3282A26328C68A7000B31C64 /* Views */,
-				3282A26428C68A8200B31C64 /* Other */,
 			);
 			path = "ToDo List";
 			sourceTree = "<group>";
