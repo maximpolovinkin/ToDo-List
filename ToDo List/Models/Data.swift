@@ -2,7 +2,7 @@
 //  Data.swift
 //  ToDo List
 //
-//  Created by Максим Половинкин on 29.07.2022.
+//  Created by Максим Половинкин on 13.02.2023.
 //
 
 import Foundation
@@ -21,5 +21,4 @@ struct TodoItem {
     var deadLine: Date?
     var isCopmplete: Bool
     var createDate: Date
-    
 }

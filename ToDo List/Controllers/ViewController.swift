@@ -6,20 +6,35 @@
 //
 
 import UIKit
+import CoreData
 
 var isEditPressed = false
 protocol ViewControllerDelegate {
     func putEfitTapped(editTapped: Bool)
 }
 
-class ViewController: UIViewController, UITableViewDataSource,UIPopoverPresentationControllerDelegate, AddPageControllerDelegate,UINavigationControllerDelegate, UITableViewDelegate {
+class ViewController: UIViewController, UITableViewDataSource,UIPopoverPresentationControllerDelegate, AddPageControllerDelegate,UINavigationControllerDelegate, UITableViewDelegate, NSFetchedResultsControllerDelegate {
   
     var importance = ""
     var editTapped: Bool?
     var deleg: ViewControllerDelegate?
     var numberOfTask = 0
     
-    func fillTheTableWith(Task: String,  DeadLine Deadline: Date?, Importance: String, isEdit: Bool) {
+    private var dataManager = DataMManager()
+    private var fetchResultController: NSFetchedResultsController<Task>!
+    
+     //MARK:  - Data Work
+    func dataWork() {
+        let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
+        let sortDescriptor = NSSortDescriptor(key: "task", ascending: true)
+       
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        
+        fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataManager.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        try! fetchResultController.performFetch()
+    }
+    
+    func fillTheTableWith(Text: String,  DeadLine Deadline: Date?, Importance: String, isEdit: Bool) {
        
         importance = Importance
         var importanceSymbol = ""
@@ -32,26 +47,54 @@ class ViewController: UIViewController, UITableViewDataSource,UIPopoverPresentat
             importanceSymbol = ""
         }
         
-        let finalTask = importanceSymbol + Task
+        let finalTask = importanceSymbol + Text
         
         if isEdit {
             
             if let Deadline = Deadline {
                 a.editTask(numberOfTask: numberOfTask, id: "0", task: finalTask, deadLine: Deadline, isCopmplete: false, createDate: .now)
-                
             } else {
                 a.editTask(numberOfTask: numberOfTask, id: "0", task: finalTask, deadLine: nil, isCopmplete: false, createDate: .now)
             }
         } else {
             
             if let Deadline = Deadline {
-                a.addTask(id: "0", task: finalTask, deadLine: Deadline, isCopmplete: false, createDate: .now)
+//                a.addTask(id: "0", task: finalTask, deadLine: Deadline, isCopmplete: false, createDate: .now)
+                let task = Task(context: dataManager.persistentContainer.viewContext)
+                task.task = Text
+                task.id = "0"
+                task.deadLine = Deadline
+                task.isCopmplete = false
+                task.createDate = .now
+                dataManager.saveContext()
                 
             } else {
-                a.addTask(id: "0", task: finalTask, deadLine: nil, isCopmplete: false, createDate: .now)
+//                a.addTask(id: "0", task: finalTask, deadLine: nil, isCopmplete: false, createDate: .now)
+                let task = Task(context: dataManager.persistentContainer.viewContext)
+                task.task = Text
+                task.id = "0"
+                task.deadLine = nil
+                task.isCopmplete = false
+                task.createDate = .now
+                print(task)
+                dataManager.saveContext()
             }
         }
         table.reloadData()
+    }
+    
+    //MARK: fetchResultController Delegate
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+            if indexPath != nil {
+                table.insertRows(at: [indexPath!], with: .automatic)
+            }
+        case .delete:
+            table.deleteRows(at: [indexPath!], with: .fade)
+        default:
+            break
+        }
     }
     
     var delegate = UITableViewDelegate.self
@@ -88,6 +131,8 @@ class ViewController: UIViewController, UITableViewDataSource,UIPopoverPresentat
         view.addSubview(table)
         table.dataSource = self
         table.delegate = self
+        dataWork()
+        fetchResultController.delegate = self
     }
     
     @objc func addTapped(sender: UIButton!){
@@ -108,8 +153,10 @@ class ViewController: UIViewController, UITableViewDataSource,UIPopoverPresentat
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return a.tasks.count
+        let sectionsInfo = fetchResultController.sections?[section]
+        return sectionsInfo?.objects?.count ?? 0
     }
+    
     public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
@@ -117,14 +164,15 @@ class ViewController: UIViewController, UITableViewDataSource,UIPopoverPresentat
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
+        let fetchResult = fetchResultController.object(at: indexPath)
+        
         cell.backgroundColor = UIColor.white
-        cell.textLabel?.text = a.tasks[indexPath.row].task
+        cell.textLabel?.text = fetchResult.task
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "⏰ dd MMM yyг."
-       
-        
-        if let deadLine = a.tasks[indexPath.row].deadLine {
+
+        if let deadLine = fetchResult.deadLine {
             let dateOfTask = Array(dateFormatter.string(from: deadLine))
             
             if  Int(String(dateOfTask[dateOfTask.count - 3]))! > 2{
@@ -133,21 +181,20 @@ class ViewController: UIViewController, UITableViewDataSource,UIPopoverPresentat
                 dateFormatter.dateFormat = "⏰ dd MMM"
             }
             
-            cell.textLabel?.text! = a.tasks[indexPath.row].task
+            cell.textLabel?.text = fetchResult.task
             cell.detailTextLabel?.text = dateFormatter.string(from: deadLine)
+            
+            cell.selectionStyle = .none
+            cell.backgroundColor = UIColor(named: "otherColor")
             cell.detailTextLabel?.textColor = UIColor.red
         } else {
-          
-            cell.textLabel?.text! = a.tasks[indexPath.row].task
+            cell.textLabel?.text = fetchResult.task
         }
-        cell.selectionStyle = .none
-        cell.backgroundColor = UIColor(named: "otherColor")
         return cell
     }
     var doneCheck = false
     // Right Swipe
         func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-            
             let action = UIContextualAction(style: .normal, title: "✅") { [weak self] (action, view, completionHandler) in
                 
                 if !self!.doneCheck {
@@ -171,9 +218,9 @@ class ViewController: UIViewController, UITableViewDataSource,UIPopoverPresentat
             return UISwipeActionsConfiguration(actions: [action])
         }
         
-      
+    
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-
+        
         // action one
         let editAction = UITableViewRowAction(style: .default, title: "ⓘ", handler: {[weak self] (action, indexPath) in
             let rootVC = AddPageViewController()
@@ -185,25 +232,21 @@ class ViewController: UIViewController, UITableViewDataSource,UIPopoverPresentat
             }
             
             isEditPressed = true
-          
+            
             self?.present(navigationController, animated: true)
             print("Edit tapped")
         })
         editAction.backgroundColor = UIColor.systemGray4
-        
-
+    
         // action two
         let deleteAction = UITableViewRowAction(style: .default, title: "🗑", handler: {[weak self] (action, indexPath) in
-           
-            self?.a.tasks.remove(at: indexPath.row)
-            // delete the table view row
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            
+            self?.dataManager.persistentContainer.viewContext.delete(self!.fetchResultController.object(at: indexPath))
+            self?.dataManager.saveContext()
             
         })
         deleteAction.backgroundColor = UIColor.systemRed
         
         return [deleteAction, editAction]
     }
-    
-   
 }

@@ -94,8 +94,8 @@
             filePath = "ToDo List/Controllers/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "78"
-            endingLineNumber = "78"
+            startingLineNumber = "121"
+            endingLineNumber = "121"
             landmarkName = "table"
             landmarkType = "24">
          </BreakpointContent>
@@ -145,6 +145,117 @@
             startingLineNumber = "107"
             endingLineNumber = "107"
             landmarkName = "saveTapped(isEdit:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C81F67C9-295A-48CC-BE86-B931946E7CA7"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ToDo List/Models/DataManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "13"
+            endingLineNumber = "13"
+            landmarkName = "DataMManager"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  uuid = "C81F67C9-295A-48CC-BE86-B931946E7CA7 - ae71fcd8cf361ffc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ToDo_List.DataMManager.persistentContainer.getter : __C.NSPersistentContainer"
+                  moduleName = "ToDo List"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maksimpolovinkin/Documents/ToDo-List/ToDo%20List/Models/DataManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "13"
+                  endingLineNumber = "13"
+                  offsetFromSymbolStart = "144">
+               </Location>
+               <Location
+                  uuid = "C81F67C9-295A-48CC-BE86-B931946E7CA7 - 31433e375bf531aa"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; __C.NSPersistentContainer in ToDo_List.DataMManager.persistentContainer.getter : __C.NSPersistentContainer"
+                  moduleName = "ToDo List"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maksimpolovinkin/Documents/ToDo-List/ToDo%20List/Models/DataManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "14"
+                  endingLineNumber = "14"
+                  offsetFromSymbolStart = "24">
+               </Location>
+               <Location
+                  uuid = "C81F67C9-295A-48CC-BE86-B931946E7CA7 - 57ba3af0d1f30be8"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ToDo_List.DataMManager.persistentContainer.setter : __C.NSPersistentContainer"
+                  moduleName = "ToDo List"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maksimpolovinkin/Documents/ToDo-List/ToDo%20List/Models/DataManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "13"
+                  endingLineNumber = "13"
+                  offsetFromSymbolStart = "96">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "20F9A61F-1CA2-4AF9-B1FF-23C82BF12639"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ToDo List/Controllers/ViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "33"
+            endingLineNumber = "33"
+            landmarkName = "dataWork()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "DAE3FD28-37D3-48A8-B245-88F9612B9953"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ToDo List/Controllers/ViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
+            landmarkName = "fillTheTableWith(Text:DeadLine:Importance:isEdit:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "DD089C06-C3B9-4167-A6A3-3A81C6FEB0E3"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ToDo List/Controllers/ViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "79"
+            endingLineNumber = "79"
+            landmarkName = "fillTheTableWith(Text:DeadLine:Importance:isEdit:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -8,7 +8,7 @@
 import UIKit
 
 protocol AddPageControllerDelegate {
-    func fillTheTableWith(Task: String, DeadLine: Date?, Importance: String, isEdit: Bool)
+    func fillTheTableWith(Text: String, DeadLine: Date?, Importance: String, isEdit: Bool)
 }
 
 class AddPageViewController : UIViewController, UITableViewDataSource, UIPopoverPresentationControllerDelegate, UITableViewDelegate, UIGestureRecognizerDelegate {
@@ -109,7 +109,7 @@ class AddPageViewController : UIViewController, UITableViewDataSource, UIPopover
             taskText += "‼️"
         }
         
-        delegate?.fillTheTableWith(Task: taskText, DeadLine: deadline, Importance: importance, isEdit: isEditPressed)
+        delegate?.fillTheTableWith(Text: taskText, DeadLine: deadline, Importance: importance, isEdit: isEditPressed)
         isEditPressed = false
 
         self.dismiss(animated: true, completion: nil)
