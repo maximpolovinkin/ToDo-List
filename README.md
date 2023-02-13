@@ -1,5 +1,5 @@
 <div>
-<h3>One of my first projects, so the quality of the code matches.</>
+<h3>One of my first projects, so the quality of the code matches. Added CoreData in the last update</>
 <h1>An application that will help you save your tasks, set their priority and set a date. You can edit, delete tasks and mark them as completed. Supported Dark mode</>
  </div>
  <div>
